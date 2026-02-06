@@ -1,13 +1,11 @@
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
+using MongoDB.Bson.Serialization;
 using System;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
-public enum TipoConta
-{
-    Corrente,
-    Poupanca
-}
-
+// Modelo Banco
 public class Banco
 {
     [BsonId]
@@ -15,12 +13,14 @@ public class Banco
     public string? Id { get; set; }
 
     public string Nome { get; set; } = "";
-    public string Agencia { get; set; } = "";
+
+    // Código único do banco
     public string CodigoBanco { get; set; } = "";
-    public TipoConta TipoConta { get; set; }
+
 
     [BsonDateTimeOptions(Kind = DateTimeKind.Local)]
     public DateTime CreatedAt { get; set; } = DateTime.Now;
+
     [BsonDateTimeOptions(Kind = DateTimeKind.Local)]
     public DateTime UpdatedAt { get; set; } = DateTime.Now;
 }

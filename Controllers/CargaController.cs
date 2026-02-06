@@ -43,23 +43,6 @@ public class CargaController : ControllerBase
         if (request.Categorias != null && request.Categorias.Any())
             await _categorias.InsertManyAsync(request.Categorias);
 
-        // Resolver BancoId das contas pelo CodigoBanco
-        if (request.Contas != null && request.Contas.Any())
-        {
-            var bancosCadastrados = await _bancos.Find(_ => true).ToListAsync();
-
-            foreach (var conta in request.Contas)
-            {
-                if (!string.IsNullOrEmpty(conta.CodigoBanco))
-                {
-                    var banco = bancosCadastrados.FirstOrDefault(b => b.CodigoBanco == conta.CodigoBanco);
-                    if (banco != null)
-                        conta.BancoId = banco.Id;
-                }
-            }
-
-            await _contas.InsertManyAsync(request.Contas);
-        }
 
         // Inserir custos fixos
         if (request.CustosFixos != null && request.CustosFixos.Any())

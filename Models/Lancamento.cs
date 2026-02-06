@@ -39,9 +39,6 @@ public class Lancamento
     public string CategoriaId { get; set; } = "";
     public string ContaId { get; set; } = "";
 
-    // Código legível
-    public string CategoriaCodigo { get; set; } = "";
-    public string ContaCodigo { get; set; } = "";
 
     [BsonDateTimeOptions(Kind = DateTimeKind.Local)]
     public DateTime CreatedAt { get; set; } = DateTime.Now;

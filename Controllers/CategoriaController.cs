@@ -55,4 +55,23 @@ public class CategoriaController : ControllerBase
         if (result.DeletedCount == 0) return NotFound();
         return NoContent();
     }
+
+    [HttpPost("Carga")] 
+    public async Task<IActionResult> PostCarga([FromBody] List<Categoria> categorias)
+    {
+        if (categorias == null || categorias.Count == 0)
+            return BadRequest("Nenhuma categoria informada.");
+
+        foreach (var cat in categorias)
+        {
+            cat.Id = null; // garante que o MongoDB gere o ObjectId
+            cat.CreatedAt = DateTime.Now;
+            cat.UpdatedAt = DateTime.Now;
+        }
+
+        await _collection.InsertManyAsync(categorias);
+
+        return Ok(categorias);
+    }
+
 }
