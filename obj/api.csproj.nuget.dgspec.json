@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\rafae_llizu7w\\Documents\\git\\api\\api.csproj": {}
+    "C:\\Users\\rafael.rocha\\OneDrive - pwi.com.br\\Documentos\\api-csharp\\api.csproj": {}
   },
   "projects": {
-    "C:\\Users\\rafae_llizu7w\\Documents\\git\\api\\api.csproj": {
+    "C:\\Users\\rafael.rocha\\OneDrive - pwi.com.br\\Documentos\\api-csharp\\api.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\rafae_llizu7w\\Documents\\git\\api\\api.csproj",
+        "projectUniqueName": "C:\\Users\\rafael.rocha\\OneDrive - pwi.com.br\\Documentos\\api-csharp\\api.csproj",
         "projectName": "api",
-        "projectPath": "C:\\Users\\rafae_llizu7w\\Documents\\git\\api\\api.csproj",
-        "packagesPath": "C:\\Users\\rafae_llizu7w\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\rafae_llizu7w\\Documents\\git\\api\\obj\\",
+        "projectPath": "C:\\Users\\rafael.rocha\\OneDrive - pwi.com.br\\Documentos\\api-csharp\\api.csproj",
+        "packagesPath": "C:\\Users\\rafael.rocha\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\rafael.rocha\\OneDrive - pwi.com.br\\Documentos\\api-csharp\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\rafae_llizu7w\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\rafael.rocha\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net10.0"
@@ -47,6 +47,26 @@
             "Microsoft.AspNetCore.OpenApi": {
               "target": "Package",
               "version": "[10.0.2, )"
+            },
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[10.0.2, )"
+            },
+            "Microsoft.EntityFrameworkCore.InMemory": {
+              "target": "Package",
+              "version": "[10.0.2, )"
+            },
+            "Microsoft.EntityFrameworkCore.SqlServer": {
+              "target": "Package",
+              "version": "[10.0.2, )"
+            },
+            "MongoDB.Driver": {
+              "target": "Package",
+              "version": "[3.6.0, )"
+            },
+            "Swashbuckle.AspNetCore": {
+              "target": "Package",
+              "version": "[10.1.1, )"
             }
           },
           "imports": [
