@@ -11,9 +11,9 @@ public class LancamentosController : ControllerBase
 
     public LancamentosController(IMongoDatabase database)
     {
-        _collection = database.GetCollection<Lancamento>("Lancamentos");
-        _contas = database.GetCollection<Conta>("Contas");
-        _categorias = database.GetCollection<Categoria>("Categorias");
+        _collection = database.GetCollection<Lancamento>("Lancamento");
+        _contas = database.GetCollection<Conta>("Conta");
+        _categorias = database.GetCollection<Categoria>("Categoria");
     }
 
     // DTO de entrada
@@ -26,7 +26,7 @@ public class LancamentosController : ControllerBase
         public StatusPagamento Status { get; set; } = StatusPagamento.Pendente;
 
         public string CategoriaCodigo { get; set; } = "";
-        public string ContaCodigo { get; set; } = "";
+        public string CodigoConta { get; set; } = "";
     }
 
     // 🔹 LISTAR TODOS
@@ -53,8 +53,8 @@ public class LancamentosController : ControllerBase
         var categoria = await _categorias.Find(x => x.CodigoCategoria == dto.CategoriaCodigo).FirstOrDefaultAsync();
         if (categoria == null) return BadRequest($"Categoria com código '{dto.CategoriaCodigo}' não encontrada");
 
-        var conta = await _contas.Find(x => x.ContaCodigo == dto.ContaCodigo).FirstOrDefaultAsync();
-        if (conta == null) return BadRequest($"Conta com código '{dto.ContaCodigo}' não encontrada");
+        var conta = await _contas.Find(x => x.CodigoConta == dto.CodigoConta).FirstOrDefaultAsync();
+        if (conta == null) return BadRequest($"Conta com código '{dto.CodigoConta}' não encontrada");
 
         var lancamento = new Lancamento
         {
@@ -80,8 +80,8 @@ public class LancamentosController : ControllerBase
         var categoria = await _categorias.Find(x => x.CodigoCategoria == dto.CategoriaCodigo).FirstOrDefaultAsync();
         if (categoria == null) return BadRequest($"Categoria com código '{dto.CategoriaCodigo}' não encontrada");
 
-        var conta = await _contas.Find(x => x.ContaCodigo == dto.ContaCodigo).FirstOrDefaultAsync();
-        if (conta == null) return BadRequest($"Conta com código '{dto.ContaCodigo}' não encontrada");
+        var conta = await _contas.Find(x => x.CodigoConta == dto.CodigoConta).FirstOrDefaultAsync();
+        if (conta == null) return BadRequest($"Conta com código '{dto.CodigoConta}' não encontrada");
 
         var lancamento = new Lancamento
         {
@@ -147,8 +147,8 @@ public class LancamentosController : ControllerBase
             var categoria = await _categorias.Find(x => x.CodigoCategoria == dto.CategoriaCodigo).FirstOrDefaultAsync();
             if (categoria == null) return BadRequest($"Categoria com código '{dto.CategoriaCodigo}' não encontrada");
 
-            var conta = await _contas.Find(x => x.ContaCodigo == dto.ContaCodigo).FirstOrDefaultAsync();
-            if (conta == null) return BadRequest($"Conta com código '{dto.ContaCodigo}' não encontrada");
+            var conta = await _contas.Find(x => x.CodigoConta == dto.CodigoConta).FirstOrDefaultAsync();
+            if (conta == null) return BadRequest($"Conta com código '{dto.CodigoConta}' não encontrada");
 
             lancamentos.Add(new Lancamento
             {

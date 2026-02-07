@@ -53,7 +53,7 @@ public class Conta
     public decimal SaldoInicial { get; set; }
     public TipoConta Tipo { get; set; } = TipoConta.Corrente;
     public string BancoId { get; set; } = "";
-    public string ContaCodigo { get; set; } = "";
+    public string CodigoConta { get; set; } = "";
 
     [BsonDateTimeOptions(Kind = DateTimeKind.Local)]
     public DateTime CreatedAt { get; set; } = DateTime.Now;

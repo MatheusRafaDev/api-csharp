@@ -11,7 +11,7 @@ public class CustosFixosController : ControllerBase
     public CustosFixosController(IMongoDatabase database)
     {
         _collection = database.GetCollection<CustosFixos>("CustosFixos");
-        _categorias = database.GetCollection<Categoria>("Categorias");
+        _categorias = database.GetCollection<Categoria>("Categoria");
     }
 
     // 🔹 LISTAR TODOS
@@ -35,8 +35,13 @@ public class CustosFixosController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> Post([FromBody] CustosFixosInput input)
     {
-        // Buscar categoria pelo código
-        var categoria = await _categorias.Find(x => x.CodigoCategoria == input.CodigoCategoria).FirstOrDefaultAsync();
+        var codigo = input.CodigoCategoria.Trim();
+
+        var categoria = await _categorias
+            .Find(x => x.CodigoCategoria == codigo)
+            .FirstOrDefaultAsync();
+
+
         if (categoria == null) return BadRequest($"Categoria com código '{input.CodigoCategoria}' não encontrada.");
 
         var custo = new CustosFixos
@@ -106,7 +111,7 @@ public class CustosFixosController : ControllerBase
         var categorias = new List<Categoria>();
         var codigosFaltando = new List<string>();
 
-        // Buscar cada categoria pelo código (==)
+
         foreach (var codigo in inputs.Select(i => i.CodigoCategoria).Distinct())
         {
 

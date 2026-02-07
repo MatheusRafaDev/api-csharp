@@ -10,7 +10,7 @@ public class ContaController : ControllerBase
 
     public ContaController(IMongoDatabase database)
     {
-        _collection = database.GetCollection<Conta>("Contas");
+        _collection = database.GetCollection<Conta>("Conta");
         _bancos = database.GetCollection<Banco>("Banco");
     }
 
@@ -36,12 +36,12 @@ public class ContaController : ControllerBase
     public async Task<IActionResult> Post([FromBody] ContaInput input)
     {
         // Verifica banco
-        var banco = await _bancos.Find(x => x.CodigoBanco == input.BancoCodigo).FirstOrDefaultAsync();
-        if (banco == null) return BadRequest($"Banco com código '{input.BancoCodigo}' não encontrado.");
+        var banco = await _bancos.Find(x => x.CodigoBanco == input.CodigoBanco).FirstOrDefaultAsync();
+        if (banco == null) return BadRequest($"Banco com código '{input.CodigoBanco}' não encontrado.");
 
-        // Verifica unicidade do ContaCodigo
-        var existe = await _collection.Find(x => x.ContaCodigo == input.ContaCodigo).AnyAsync();
-        if (existe) return BadRequest($"ContaCodigo '{input.ContaCodigo}' já existe.");
+        // Verifica unicidade do CodigoConta
+        var existe = await _collection.Find(x => x.CodigoConta == input.CodigoConta).AnyAsync();
+        if (existe) return BadRequest($"CodigoConta '{input.CodigoConta}' já existe.");
 
         var conta = new Conta
         {
@@ -49,7 +49,7 @@ public class ContaController : ControllerBase
             SaldoInicial = input.SaldoInicial,
             Tipo = input.Tipo,
             BancoId = banco.Id!,
-            ContaCodigo = input.ContaCodigo,
+            CodigoConta = input.CodigoConta,
             CreatedAt = input.CreatedAt,
             UpdatedAt = input.UpdatedAt
         };
@@ -62,12 +62,12 @@ public class ContaController : ControllerBase
     [HttpPut("{id}")]
     public async Task<IActionResult> Put(string id, [FromBody] ContaInput input)
     {
-        var banco = await _bancos.Find(x => x.CodigoBanco == input.BancoCodigo).FirstOrDefaultAsync();
-        if (banco == null) return BadRequest($"Banco com código '{input.BancoCodigo}' não encontrado.");
+        var banco = await _bancos.Find(x => x.CodigoBanco == input.CodigoBanco).FirstOrDefaultAsync();
+        if (banco == null) return BadRequest($"Banco com código '{input.CodigoBanco}' não encontrado.");
 
-        // Verifica unicidade do ContaCodigo (exceto a própria conta)
-        var existe = await _collection.Find(x => x.ContaCodigo == input.ContaCodigo && x.Id != id).AnyAsync();
-        if (existe) return BadRequest($"ContaCodigo '{input.ContaCodigo}' já existe.");
+        // Verifica unicidade do CodigoConta (exceto a própria conta)
+        var existe = await _collection.Find(x => x.CodigoConta == input.CodigoConta && x.Id != id).AnyAsync();
+        if (existe) return BadRequest($"CodigoConta '{input.CodigoConta}' já existe.");
 
         var conta = new Conta
         {
@@ -76,7 +76,7 @@ public class ContaController : ControllerBase
             SaldoInicial = input.SaldoInicial,
             Tipo = input.Tipo,
             BancoId = banco.Id!,
-            ContaCodigo = input.ContaCodigo,
+            CodigoConta = input.CodigoConta,
             CreatedAt = input.CreatedAt,
             UpdatedAt = input.UpdatedAt
         };
@@ -106,11 +106,11 @@ public class ContaController : ControllerBase
         var contas = new List<Conta>();
         foreach (var input in inputs)
         {
-            var banco = await _bancos.Find(x => x.CodigoBanco == input.BancoCodigo).FirstOrDefaultAsync();
-            if (banco == null) return BadRequest($"Banco com código '{input.BancoCodigo}' não encontrado.");
+            var banco = await _bancos.Find(x => x.CodigoBanco == input.CodigoBanco).FirstOrDefaultAsync();
+            if (banco == null) return BadRequest($"Banco com código '{input.CodigoBanco}' não encontrado.");
 
-            var existe = await _collection.Find(x => x.ContaCodigo == input.ContaCodigo).AnyAsync();
-            if (existe) return BadRequest($"ContaCodigo '{input.ContaCodigo}' já existe.");
+            var existe = await _collection.Find(x => x.CodigoConta == input.CodigoConta).AnyAsync();
+            if (existe) return BadRequest($"CodigoConta '{input.CodigoConta}' já existe.");
 
             contas.Add(new Conta
             {
@@ -118,7 +118,7 @@ public class ContaController : ControllerBase
                 SaldoInicial = input.SaldoInicial,
                 Tipo = input.Tipo,
                 BancoId = banco.Id!,
-                ContaCodigo = input.ContaCodigo,
+                CodigoConta = input.CodigoConta,
                 CreatedAt = input.CreatedAt,
                 UpdatedAt = input.UpdatedAt
             });
@@ -135,8 +135,8 @@ public class ContaInput
     public string Nome { get; set; } = "";
     public decimal SaldoInicial { get; set; }
     public TipoConta Tipo { get; set; } = TipoConta.Corrente;
-    public string BancoCodigo { get; set; } = "";
-    public string ContaCodigo { get; set; } = "";
+    public string CodigoBanco { get; set; } = "";
+    public string CodigoConta { get; set; } = "";
 
     public DateTime CreatedAt { get; set; } = DateTime.Now;
     public DateTime UpdatedAt { get; set; } = DateTime.Now;

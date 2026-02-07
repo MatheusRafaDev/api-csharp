@@ -2,10 +2,6 @@ using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
 
-using MongoDB.Bson;
-using MongoDB.Bson.Serialization.Attributes;
-
-
 public class Receita
 {
     [BsonId]
@@ -20,7 +16,7 @@ public class Receita
     [BsonDateTimeOptions(Kind = DateTimeKind.Local)]
     public DateTime Data { get; set; } = DateTime.Now;
 
-    public StatusPagamento Status { get; set; } = StatusPagamento.Pendente;
+    public StatusPagamento Status { get; set; }
 
     // Referência ObjectId
     public string CategoriaId { get; set; } = "";
