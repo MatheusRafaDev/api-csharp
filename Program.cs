@@ -17,6 +17,9 @@ builder.Services.AddScoped<IMongoDatabase>(sp =>
     return client.GetDatabase(databaseName);
 });
 
+builder.Services.AddScoped<LancamentoService>();
+builder.Services.AddScoped<DatabaseService>();
+builder.Services.AddScoped<CalculadoraService>();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
