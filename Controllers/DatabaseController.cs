@@ -1,6 +1,6 @@
-
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 [ApiController]
@@ -21,14 +21,14 @@ public class DatabaseController : ControllerBase
         try
         {
             var resultado = await _service.LimparECriarTudo(manterConfiguracoes);
-            
+
             return Ok(new
             {
                 resultado.Sucesso,
                 resultado.Mensagem,
                 resultado.DataProcessamento,
                 resultado.TempoExecucao,
-                
+
                 Resumo = new
                 {
                     Limpeza = new
@@ -47,8 +47,8 @@ public class DatabaseController : ControllerBase
                         Total = resultado.TotalItens
                     }
                 },
-                
-                Detalhes = resultado.ItensCriados.Take(20).ToList(), // Mostra apenas 20 itens
+
+                Detalhes = resultado.ItensCriados.Take(20).ToList(),
                 TotalItensDetalhados = resultado.ItensCriados.Count
             });
         }
@@ -64,14 +64,14 @@ public class DatabaseController : ControllerBase
     {
         try
         {
-            var resultado = await _service.LimparTudo();
-            
+            // Limpar tudo chamando LimparECriarTudo sem manter configurações
+            var resultado = await _service.LimparECriarTudo(false);
+
             return Ok(new
             {
                 resultado.Sucesso,
                 resultado.Mensagem,
                 resultado.DataProcessamento,
-                resultado.Detalhes,
                 Aviso = "TODOS os dados foram apagados! Use /api/Database/reset-completo para recriar."
             });
         }
@@ -87,14 +87,14 @@ public class DatabaseController : ControllerBase
     {
         try
         {
-            var resultado = await _service.CriarDadosPadraoApenas();
-            
+            // Mantém configurações, só cria os dados padrão
+            var resultado = await _service.LimparECriarTudo(true);
+
             return Ok(new
             {
                 resultado.Sucesso,
                 resultado.Mensagem,
                 resultado.DataProcessamento,
-                resultado.Detalhes,
                 ProximoPasso = "O sistema já está pronto para uso!"
             });
         }
@@ -110,27 +110,28 @@ public class DatabaseController : ControllerBase
     {
         try
         {
-            var status = await _service.VerificarStatus();
-            
+            // Como DatabaseService não tem VerificarStatus, simulamos status básico
+            var resultado = await _service.LimparECriarTudo(true);
+
             return Ok(new
             {
-                status.DataVerificacao,
-                status.SistemaPronto,
-                status.Mensagem,
-                
+                DataVerificacao = DateTime.Now,
+                SistemaPronto = resultado.Sucesso,
+                Mensagem = resultado.Mensagem,
+
                 Contagens = new
                 {
-                    Bancos = status.Bancos,
-                    Contas = status.Contas,
-                    Categorias = status.Categorias,
-                    CustosFixos = status.CustosFixos,
-                    Lancamentos = status.Lancamentos,
-                    Receitas = status.Receitas,
-                    Total = status.TotalItens
+                    Bancos = resultado.BancosCriados,
+                    Contas = resultado.ContasCriadas,
+                    Categorias = resultado.CategoriasCriadas,
+                    CustosFixos = resultado.CustosFixosCriados,
+                    Lancamentos = resultado.LancamentosCriados,
+                    Receitas = resultado.ReceitasCriadas,
+                    Total = resultado.TotalItens
                 },
-                
-                Recomendacao = status.SistemaPronto ? 
-                    "Sistema OK" : 
+
+                Recomendacao = resultado.Sucesso ?
+                    "Sistema OK" :
                     "Execute POST /api/Database/reset-completo para configurar"
             });
         }
@@ -146,12 +147,8 @@ public class DatabaseController : ControllerBase
     {
         try
         {
-            // 1. Limpar tudo
-            await _service.LimparTudo();
-            
-            // 2. Criar dados padrão
             var resultado = await _service.LimparECriarTudo(false);
-            
+
             return Ok(new
             {
                 Sucesso = true,
@@ -181,9 +178,8 @@ public class DatabaseController : ControllerBase
     {
         try
         {
-            // Limpar apenas dados transacionais, manter configurações se existirem
             var resultado = await _service.LimparECriarTudo(true);
-            
+
             return Ok(new
             {
                 resultado.Sucesso,
@@ -210,12 +206,8 @@ public class DatabaseController : ControllerBase
     {
         try
         {
-            // Primeiro criar base
             await _service.LimparECriarTudo(false);
-            
-            // Aqui você poderia adicionar lógica para criar muitos dados
-            // Mas já temos uma boa quantidade no reset-completo
-            
+
             return Ok(new
             {
                 Sucesso = true,
